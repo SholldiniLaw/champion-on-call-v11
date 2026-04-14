@@ -1,13 +1,20 @@
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
 import { prisma } from '@/lib/db';
 import { Shield } from 'lucide-react';
 import { LoginForm } from './login-form';
 
 export default async function LoginPage() {
-  const users = await prisma.user.findMany({
-    include: { contractorProfile: true, policyholderProfile: true },
-    orderBy: [{ role: 'asc' }, { name: 'asc' }],
-  });
+  let users: any[] = [];
+  try {
+    users = await prisma.user.findMany({
+      include: { contractorProfile: true, policyholderProfile: true },
+      orderBy: [{ role: 'asc' }, { name: 'asc' }],
+    });
+  } catch {
+    users = [];
+  }
 
   const admins = users.filter((u) => u.role === 'ADMIN');
   const policyholders = users.filter((u) => u.role === 'POLICYHOLDER');
