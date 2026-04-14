@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { requireRole } from '@/lib/auth';
 import { ReportWizard } from './report-wizard';
 
