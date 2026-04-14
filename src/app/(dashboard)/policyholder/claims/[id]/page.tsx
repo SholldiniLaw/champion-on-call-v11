@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'; 
 import { requireRole } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { statusLabel, statusColor, formatCurrency } from '@/lib/utils';
