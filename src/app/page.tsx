@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Shield, Zap, Users, BarChart3, ArrowRight, CheckCircle2 } from 'lucide-react';
 
@@ -120,3 +121,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
