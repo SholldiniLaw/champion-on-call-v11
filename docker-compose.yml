@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: champion
+      POSTGRES_PASSWORD: champion
+      POSTGRES_DB: champion_on_call
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U champion -d champion_on_call"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://champion:champion@db:5432/champion_on_call?schema=public
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_DEMO_MODE: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+        npx prisma migrate deploy &&
+        npx prisma db seed &&
+        npm start
+      "
+
+volumes:
+  pgdata:
